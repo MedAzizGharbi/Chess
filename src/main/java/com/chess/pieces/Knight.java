@@ -9,6 +9,9 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
+import static com.chess.board.Move.*;
+
 //This is the class for the chess piece knight
 //The Knight can move to 8 places in a perfect scenario
 //The value of a knight is typically (3)
@@ -35,14 +38,20 @@ public class Knight extends Piece{
                 }
                 final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                 if(!candidateDestinationTile.isTileOccupied()){
-                    legalMoves.add(new Move());
+                    legalMoves.add(new MajorMove(board,
+                            this,
+                            candidateDestinationCoordinate));
                 }
                 else{
                     final Piece pieceAtDestination = candidateDestinationTile.getPiece();
                     final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                     if(this.pieceAlliance != pieceAlliance){
                         //The piece that is on the destination is an enemy piece
-                        legalMoves.add(new Move());
+                        //Which means the move will be an attack move
+                        legalMoves.add(new AttackMove(board,
+                                this,
+                                candidateDestinationCoordinate,
+                                pieceAtDestination));
                     }
                 }
             }

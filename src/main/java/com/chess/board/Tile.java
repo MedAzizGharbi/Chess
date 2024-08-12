@@ -15,7 +15,7 @@ public abstract class Tile {
     //this method is going to create an empty "board"
     private static Map<Integer, EmptyTile> createAllPossibleEmptyTile() {
         final Map<Integer , EmptyTile> emptyTileMap = new HashMap<>();
-        for(int i = 0 ; i < 64 ; i++)
+        for(int i = 0 ; i < BoardUtils.NUM_TILES ; i++)
         {
             emptyTileMap.put(i, new EmptyTile(i));
 
@@ -27,7 +27,7 @@ public abstract class Tile {
         return piece != null ? new OccupiedTile(tileCoordinate,piece) : EMPTY_TILES_CACHE.get(tileCoordinate);
         //Only method everyone will be allowed to use.
     }
-    private Tile(int tileCoordinate){
+    private Tile(final int tileCoordinate){
         this.tileCoordinate = tileCoordinate;
     }
 
