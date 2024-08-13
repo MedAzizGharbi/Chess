@@ -6,29 +6,27 @@ import com.chess.board.BoardUtils;
 import com.chess.board.Move;
 import com.chess.board.Tile;
 import com.google.common.collect.ImmutableList;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class Rook extends Piece{
-    private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {1 , -1  , 8 , -8};
-    Rook(final int piecePosition, Alliance pieceAlliance) {
+public class Queen extends Piece{
+    private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9, -8, -7 , -1, 1, 7, 8, 9};
+    Queen(final int piecePosition, Alliance pieceAlliance) {
         super(piecePosition, pieceAlliance);
     }
 
     @Override
     public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
-        for(int candidateCoordinateOffset : CANDIDATE_MOVE_VECTOR_COORDINATES){
+        for(int candidateCoordinateOffset : CANDIDATE_MOVE_VECTOR_COORDINATES)
+        {
             int candidateDestinationCoordinate = this.piecePosition;
-            while(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate))
-            {
-                if(isFirstColumnExclusion(candidateDestinationCoordinate , candidateCoordinateOffset) ||
-                isEighthColumnExclusion(candidateDestinationCoordinate , candidateCoordinateOffset))
-                {
-                    break;
-                }
+            while(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)){
+                if(isEighthColumnExclusion(candidateDestinationCoordinate , candidateCoordinateOffset)
+                || isFirstColumnExclusion(candidateDestinationCoordinate , candidateCoordinateOffset))
                 candidateDestinationCoordinate += candidateCoordinateOffset;
                 final Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                 if(BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate))
@@ -58,9 +56,11 @@ public class Rook extends Piece{
         return ImmutableList.copyOf(legalMoves);
     }
     private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset){
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -1) ;
+        return BoardUtils.FIRST_COLUMN[currentPosition] &&
+                ((candidateOffset == -1) || (candidateOffset == 7) || (candidateOffset == -9));
     }
     private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset){
-        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 1);
+        return BoardUtils.EIGHTH_COLUMN[currentPosition] &&
+                ((candidateOffset == 1) || (candidateOffset == -7) || (candidateOffset == 9));
     }
 }
